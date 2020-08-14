@@ -7,7 +7,8 @@ fn main() {
 
     let _ = client.set_secret("foo", "bar");
 
-    let secret = client.get_secret("foo").unwrap();
+    let secret = client.get_secret("my-secret", Some("kv"));
+    println!("{:#?}", secret);
 
-    println!("Secret is \"bar\": {}", secret);
+    // println!("Secret is \"bar\": {}", secret);
 }

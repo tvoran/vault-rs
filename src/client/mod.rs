@@ -1035,8 +1035,9 @@ where
     /// assert!(res.is_ok());
     /// assert_eq!(res.unwrap(), "world");
     /// ```
-    pub fn get_secret<S: AsRef<str>>(&self, key: S) -> Result<String> {
-        let res = self.get::<_, String>(&format!("/v1/secret/data/{}", key.as_ref())[..], None)?;
+    pub fn get_secret<S: AsRef<str>>(&self, key: S, engine_path: Option<&str>) -> Result<String> {
+        let engine_path = engine_path.unwrap_or("secret");
+        let res = self.get::<_, String>(&format!("/v1/{}/data/{}", engine_path, key.as_ref())[..], None)?;
         let decoded: VaultResponse<SecretDataWrapper<SecretData>> = parse_vault_response(res)?;
         match decoded.data {
             Some(data) => Ok(data.data.value),
